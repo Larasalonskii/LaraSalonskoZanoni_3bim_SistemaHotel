@@ -1,0 +1,611 @@
+/* ============================================
+   CRUD - mesmo estilo do menu (tema escuro + toques dourados)
+   ============================================ */
+
+/* --- Reset Básico --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Variáveis --- */
+:root {
+    --cor-primaria: #ff6f9c;
+    --cor-primaria-escura: #ffc2d1;
+    --cor-secundaria: #ff8fab;
+    --cor-rosa-claro: #ff6f9c;
+    --cor-fundo: #0d0609;
+    --cor-texto: #ffe9ef;
+    --cor-texto-suave: rgba(255, 233, 239, 0.72);
+    --cor-borda: rgba(255, 194, 209, 0.22);
+    --cor-branco: #ffffff;
+    --cor-destaque: #ffc2d1;
+    --cor-campo: rgba(255, 255, 255, 0.06);
+    --ouro: #c9a26b;
+
+    --gradiente-rosa: linear-gradient(135deg, #ff6f9c 0%, #d6336c 100%);
+    --raio: 28px;
+    --raio-campo: 14px;
+
+    --fonte-titulo: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --fonte-texto: 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+    color-scheme: dark;
+}
+
+/* --- Estrutura Geral --- */
+body {
+    font-family: var(--fonte-texto);
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    background-image:
+        radial-gradient(circle at 10% 0%, rgba(214, 51, 108, 0.22), transparent 45%),
+        radial-gradient(circle at 95% 30%, rgba(255, 111, 156, 0.10), transparent 45%),
+        radial-gradient(circle at 30% 100%, rgba(214, 51, 108, 0.15), transparent 50%);
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Header --- */
+header {
+    background: linear-gradient(135deg, #4a1128 0%, #2a0a17 55%, #14070d 100%);
+    color: #ffe9ef;
+    text-align: center;
+    padding: 3rem 1.5rem 5rem;
+    border-radius: 0 0 48px 48px;
+    border-bottom: 1px solid rgba(201, 162, 107, 0.55);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 0 40px rgba(214, 51, 108, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before,
+header::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(214, 51, 108, 0.16);
+    pointer-events: none;
+}
+
+header::before {
+    width: 260px;
+    height: 260px;
+    top: -110px;
+    left: -60px;
+}
+
+header::after {
+    width: 200px;
+    height: 200px;
+    bottom: -95px;
+    right: -45px;
+}
+
+header h1 {
+    position: relative;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(1.9rem, 5vw, 2.7rem);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    margin-bottom: 0.9rem;
+}
+
+header h1::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 2px;
+    margin: 0.9rem auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+
+header p {
+    position: relative;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--cor-destaque);
+    opacity: 0.95;
+}
+
+/* Link opcional para voltar ao menu: <a class="voltar" href="../index.html">← Menu</a> */
+.voltar {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.5rem;
+    z-index: 2;
+    padding: 0.45rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--cor-branco);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    transition: background 0.3s ease;
+}
+
+.voltar:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Main --- */
+main.container-master {
+    flex: 1;
+    width: 100%;
+    max-width: 1040px;
+    margin: -2.5rem auto 3rem;
+    padding: 0 1.25rem;
+    position: relative;
+}
+
+/* --- Cartão principal (formulário + imagem) --- */
+.conteudo-principal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    padding: 2.5rem;
+    margin-bottom: 1.75rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 14px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* --- Títulos das seções --- */
+.form-esquerda h2,
+.form-direita h2,
+.lista-quarto h3,
+.lista-unidades h3,
+.lista-crud h3 {
+    font-family: var(--fonte-titulo);
+    font-weight: 500;
+    color: var(--cor-primaria-escura);
+}
+
+.form-esquerda h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cor-borda);
+    position: relative;
+}
+
+/* detalhe dourado sob o título */
+.form-esquerda h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 56px;
+    height: 2px;
+    background: var(--ouro);
+}
+
+/* --- Formulário (esquerda) --- */
+.form-esquerda {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-esquerda label {
+    margin-top: 1.1rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--cor-primaria);
+}
+
+/* Campos: texto, número, e-mail, senha, data, select e textarea */
+.form-esquerda input[type="text"],
+.form-esquerda input[type="number"],
+.form-esquerda input[type="email"],
+.form-esquerda input[type="password"],
+.form-esquerda input[type="date"],
+.form-esquerda input[type="tel"],
+.form-esquerda select,
+.form-esquerda textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.98rem;
+    color: var(--cor-texto);
+    background-color: var(--cor-campo);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio-campo);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.form-esquerda input::placeholder,
+.form-esquerda textarea::placeholder {
+    color: rgba(255, 233, 239, 0.4);
+}
+
+.form-esquerda textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* seta personalizada do select */
+.form-esquerda select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23ff8fab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+.form-esquerda select option {
+    background-color: #1f0c14;
+    color: #ffe9ef;
+}
+
+.form-esquerda input:focus,
+.form-esquerda select:focus,
+.form-esquerda textarea:focus {
+    outline: none;
+    border-color: var(--cor-secundaria);
+    background-color: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 0 0 4px rgba(255, 111, 156, 0.20);
+}
+
+/* campos bloqueados (somente leitura / desabilitados) */
+.form-esquerda input[readonly],
+.form-esquerda select:disabled,
+.form-esquerda textarea[readonly] {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 233, 239, 0.45);
+    border-style: dashed;
+    cursor: not-allowed;
+}
+
+.form-esquerda select:disabled {
+    opacity: 1;
+}
+
+/* linha do ID com botões */
+.linha-id {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.linha-id input[type="text"],
+.linha-id input[type="number"] {
+    width: 160px;
+}
+
+/* --- Botões --- */
+input[type="button"],
+button {
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cor-branco);
+    background-image: var(--gradiente-rosa);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(214, 51, 108, 0.28);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+input[type="button"]:hover,
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(214, 51, 108, 0.38);
+    filter: brightness(1.05);
+}
+
+input[type="button"]:active,
+button:active {
+    transform: translateY(0);
+}
+
+/* Cancelar: estilo "contorno" discreto */
+#btCancelar {
+    color: var(--cor-destaque);
+    background-image: none;
+    background-color: transparent;
+    border: 1px solid rgba(255, 194, 209, 0.45);
+    box-shadow: none;
+}
+
+#btCancelar:hover {
+    background-color: rgba(255, 194, 209, 0.12);
+    box-shadow: none;
+}
+
+/* Excluir: rosa mais escuro para chamar atenção */
+#btExcluir {
+    background-image: linear-gradient(135deg, #d6336c 0%, #9c1d4a 100%);
+}
+
+.botoes-acao {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* --- Aviso --- */
+#divAviso {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--cor-destaque);
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--cor-borda);
+    border-left: 4px solid var(--ouro);
+    border-radius: 14px;
+}
+
+/* --- Imagem (direita) --- */
+.form-direita {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-direita h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+    text-align: center;
+}
+
+.instrucao-imagem {
+    margin-bottom: 1.1rem;
+    font-size: 0.8rem;
+    color: var(--cor-texto-suave);
+    text-align: center;
+}
+
+.img-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.img-container img {
+    width: 100%;
+    max-width: 340px;
+    height: 340px;
+    object-fit: cover;
+    padding: 6px;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(201, 162, 107, 0.55);
+    border-radius: 24px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+    cursor: default;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Na tela de Tipo de Quarto use: <div class="img-container editavel"> para a imagem ser clicável */
+.img-container.editavel img {
+    cursor: pointer;
+    border-style: dashed;
+}
+
+.img-container.editavel img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 16px 36px rgba(214, 51, 108, 0.35);
+}
+
+/* --- Seção de listagem --- */
+.lista-quarto,
+.lista-unidades,
+.lista-crud {
+    padding: 2rem 2.5rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 14px 36px rgba(0, 0, 0, 0.45);
+}
+
+.lista-quarto h3,
+.lista-unidades h3,
+.lista-crud h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--cor-borda);
+    position: relative;
+}
+
+.lista-quarto h3::after,
+.lista-unidades h3::after,
+.lista-crud h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 56px;
+    height: 2px;
+    background: var(--ouro);
+}
+
+#outputSaida {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--cor-texto-suave);
+    overflow-x: auto; /* tabelas largas rolam dentro do cartão */
+}
+
+/* --- Tabelas --- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.93rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--cor-borda);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+thead th {
+    padding: 0.95rem 1.1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cor-branco);
+    background-image: linear-gradient(135deg, #d6336c 0%, #8f1a47 100%);
+}
+
+tbody td {
+    padding: 0.85rem 1.1rem;
+    color: var(--cor-texto);
+    border-bottom: 1px solid rgba(255, 194, 209, 0.12);
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr {
+    transition: background-color 0.25s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(214, 51, 108, 0.22);
+}
+
+/* primeira coluna (geralmente o ID) em destaque */
+tbody td:first-child {
+    font-weight: 600;
+    color: var(--cor-primaria-escura);
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 1.5rem 1rem 2.25rem;
+    font-family: var(--fonte-titulo);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--cor-destaque);
+}
+
+footer p::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 2px;
+    margin: 0 auto 1.1rem;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+
+/* --- Acessibilidade --- */
+input[type="button"]:focus-visible,
+button:focus-visible,
+.voltar:focus-visible {
+    outline: 3px solid var(--cor-secundaria);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+    header {
+        padding: 3.5rem 1rem 4.5rem;
+        border-radius: 0 0 34px 34px;
+    }
+
+    .conteudo-principal {
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: 1.75rem 1.5rem;
+    }
+
+    /* imagem aparece primeiro no celular */
+    .form-direita {
+        order: -1;
+    }
+
+    .img-container img {
+        height: 260px;
+    }
+
+    .linha-id input[type="text"],
+    .linha-id input[type="number"] {
+        flex: 1;
+        width: auto;
+        min-width: 110px;
+    }
+
+    .lista-quarto,
+    .lista-unidades,
+    .lista-crud {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .voltar {
+        position: static;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+}
+
+header {
+    position: relative;
+}
+
+.btn-voltar {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.btn-voltar:hover {
+    background: rgba(255, 255, 255, 0.32);
+    transform: translateX(-3px);
+}

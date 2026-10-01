@@ -1,0 +1,308 @@
+/* --- Reset Básico --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Variáveis --- */
+:root {
+    --cor-primaria: #d6336c;
+    --cor-primaria-escura: #b02458;
+    --cor-secundaria: #ff8fab;
+    --cor-rosa-claro: #ff6f9c;
+    --cor-fundo: #0d0609;
+    --cor-texto: #ffe9ef;
+    --cor-texto-suave: rgba(255, 233, 239, 0.72);
+    --cor-borda: rgba(255, 194, 209, 0.22);
+    --cor-branco: #ffffff;
+    --cor-destaque: #ffc2d1;
+    --ouro: #c9a26b;
+
+    --gradiente-rosa: linear-gradient(135deg, #ff6f9c 0%, #d6336c 100%);
+    --gradiente-rosa-escuro: linear-gradient(135deg, #d6336c 0%, #8f1a47 100%);
+    --raio: 28px;
+
+    --fonte-titulo: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --fonte-texto: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* --- Estrutura Geral --- */
+body {
+    font-family: var(--fonte-texto);
+    color: var(--cor-texto);
+    background-color: var(--cor-fundo);
+    background-image:
+        radial-gradient(circle at 10% 0%, rgba(214, 51, 108, 0.22), transparent 45%),
+        radial-gradient(circle at 95% 30%, rgba(255, 111, 156, 0.10), transparent 45%),
+        radial-gradient(circle at 30% 100%, rgba(214, 51, 108, 0.15), transparent 50%);
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Header --- */
+header {
+    background: linear-gradient(135deg, #4a1128 0%, #2a0a17 55%, #14070d 100%);
+    color: #ffe9ef;
+    text-align: center;
+    padding: 3.75rem 1.5rem 5.5rem;
+    border-radius: 0 0 48px 48px;
+    border-bottom: 1px solid rgba(201, 162, 107, 0.55);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55), 0 0 40px rgba(214, 51, 108, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+/* círculos decorativos translúcidos */
+header::before,
+header::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(214, 51, 108, 0.16);
+    pointer-events: none;
+}
+
+header::before {
+    width: 280px;
+    height: 280px;
+    top: -120px;
+    left: -70px;
+}
+
+header::after {
+    width: 210px;
+    height: 210px;
+    bottom: -100px;
+    right: -50px;
+}
+
+header h1 {
+    position: relative;
+    font-family: var(--fonte-titulo);
+    font-size: clamp(2.1rem, 5.5vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+}
+
+/* fio dourado entre título e subtítulo */
+header h1::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 2px;
+    margin: 1rem auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+
+header p {
+    position: relative;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--cor-destaque);
+    opacity: 0.95;
+}
+
+/* --- Main --- */
+main.container-master {
+    flex: 1;
+    width: 100%;
+    max-width: 860px;
+    margin: -2.75rem auto 3.5rem;
+    padding: 0 1.25rem;
+    position: relative;
+}
+
+/* --- Grid 2x2 --- */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    counter-reset: item;
+}
+
+.card-menu {
+    counter-increment: item;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.25rem 2rem 3.5rem;
+    background-color: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    text-decoration: none;
+    color: var(--cor-texto);
+    text-align: left;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 10px 28px rgba(0, 0, 0, 0.40);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+}
+
+/* camada de gradiente que preenche o card no hover */
+.card-menu > * {
+    position: relative;
+    z-index: 1;
+}
+
+.card-menu::before {
+    content: counter(item, decimal-leading-zero);
+    position: absolute;
+    top: 1.4rem;
+    right: 1.75rem;
+    z-index: 1;
+    font-family: var(--fonte-titulo);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ouro);
+    transition: color 0.4s ease;
+}
+
+.card-menu::after {
+    content: "Acessar  →";
+    position: absolute;
+    left: 2rem;
+    bottom: 1.4rem;
+    z-index: 1;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cor-secundaria);
+    transition: color 0.4s ease, letter-spacing 0.4s ease;
+}
+
+.card-menu:hover {
+    transform: translateY(-8px);
+    border-color: transparent;
+    background-image: var(--gradiente-rosa-escuro);
+    box-shadow: 0 4px 8px rgba(143, 26, 71, 0.15), 0 24px 44px rgba(143, 26, 71, 0.40);
+}
+
+.card-menu:hover::before {
+    color: #ffe9c7;
+}
+
+.card-menu:hover::after {
+    color: var(--cor-branco);
+    letter-spacing: 0.3em;
+}
+
+.card-icon {
+    width: 62px;
+    height: 62px;
+    display: grid;
+    place-items: center;
+    font-size: 1.75rem;
+    margin-bottom: 1.4rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 194, 209, 0.18), rgba(214, 51, 108, 0.30));
+    border: 1px solid rgba(201, 162, 107, 0.45);
+    transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+}
+
+.card-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--cor-destaque);
+    transition: color 0.4s ease;
+}
+
+.card-menu:hover .card-icon {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 233, 199, 0.8);
+    transform: scale(1.06) rotate(-4deg);
+}
+
+.card-menu:hover .card-icon svg {
+    color: var(--cor-branco);
+}
+
+.card-menu h2 {
+    font-family: var(--fonte-titulo);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--cor-destaque);
+    margin-bottom: 0.5rem;
+    transition: color 0.4s ease;
+}
+
+.card-menu p {
+    font-size: 0.93rem;
+    line-height: 1.6;
+    color: var(--cor-texto-suave);
+    transition: color 0.4s ease;
+}
+
+.card-menu:hover h2 {
+    color: var(--cor-branco);
+}
+
+.card-menu:hover p {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 1.5rem 1rem 2.25rem;
+    font-family: var(--fonte-titulo);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--cor-destaque);
+}
+
+footer p::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 2px;
+    margin: 0 auto 1.1rem;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+}
+
+/* --- Acessibilidade --- */
+.card-menu:focus-visible {
+    outline: 3px solid var(--cor-secundaria);
+    outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* --- Responsividade --- */
+@media (max-width: 640px) {
+    header {
+        padding: 3rem 1rem 4.5rem;
+        border-radius: 0 0 34px 34px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card-menu {
+        padding: 2rem 1.75rem 3.25rem;
+    }
+
+    .card-menu::after {
+        left: 1.75rem;
+    }
+}

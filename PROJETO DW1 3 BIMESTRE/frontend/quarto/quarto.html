@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Quartos</title>
+    <link rel="stylesheet" href="quarto.css">
+</head>
+
+<body onload="inicializar()">
+    <header>
+        <a href="../menu/menu.html" class="btn-voltar">← Voltar ao menu</a>
+        <h1>Gerenciamento de Quartos</h1>
+        <p>Gerencie o estoque de quartos do sistema.</p>
+    </header>
+
+    <main class="container-master">
+        <div class="conteudo-principal">
+            <section class="form-esquerda">
+                <h2>Dados do Quarto</h2>
+
+                <label for="inputId_quarto">ID do Quarto</label>
+                <div class="linha-id">
+                    <input type="text" name="inputId_quarto" id="inputId_quarto" placeholder="Ex: 101">
+                    <input type="button" value="Procure" id="btProcure" onclick="procure()">
+                    <input type="button" value="Inserir" id="btInserir" onclick="inserir()" style="display:none;">
+                    <input type="button" value="Alterar" id="btAlterar" onclick="alterar()" style="display:none;">
+                    <input type="button" value="Excluir" id="btExcluir" onclick="excluir()" style="display:none;">
+                </div>
+
+                <label for="inputCapacidade_quarto">Capacidade do Quarto</label>
+                <input type="text" name="inputCapacidade_quarto" id="inputCapacidade_quarto">
+
+                <label for="selectId_tipo_quarto">Tipo do Quarto</label>
+                <select name="selectId_tipo_quarto" id="selectId_tipo_quarto" disabled
+                    onchange="atualizarImagemDoTipo()">
+                    <option value="">Carregando...</option>
+                </select>
+
+                <div id="divAviso">Informe o ID e clique em Procure</div>
+
+                <div class="botoes-acao">
+                    <input type="button" value="Salvar" id="btSalvar" onclick="salvar()" style="display:none;">
+                    <input type="button" value="Cancelar" id="btCancelar" onclick="cancelarOperacao()"
+                        style="display:none;">
+                </div>
+            </section>
+
+            <aside class="form-direita">
+                <h2>Imagem do Tipo do Quarto</h2>
+                <p class="instrucao-imagem">(A foto do tipo é alterada em Tipos de Quarto)</p>
+                <div class="img-container">
+                    <img id="quarto-tipo-1" src="http://localhost:3001/imagens/tipos/skeleton.svg" data-src="" alt="Selecione um tipo de quarto" />
+                </div>
+            </aside>
+        </div>
+
+        <section class="lista-quarto">
+            <h3>Quartos Cadastrados</h3>
+            <div id="outputSaida">Carregando...</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Sistema CRUD Quartos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="./quarto.js"></script>
+</body>
+
+</html>
