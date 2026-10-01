@@ -1,12 +1,12 @@
-# LaraSalonskoZanoni_3bim_SistemaHotel# 🏨 Sistema de Gerenciamento de Hotel
+🏨 Sistema de Gerenciamento de Hotel
 
 Projeto da disciplina **Desenvolvimento Web 1 (DW1)** — 3º bimestre.
 
 Sistema web para gerenciar os dados de um hotel, com operações de **cadastro, consulta, alteração e exclusão (CRUD)** de quartos, tipos de quarto, pessoas, clientes, funcionários e cargos. Possui um menu inicial que leva a cada tela e permite enviar uma foto para cada tipo de quarto.
 
-> **Autora:** [Lara Salosnki Zanoni]
-> **Turma :** [M32 - 2026]
-> **Professor(a):** [Radames]
+> **Autora:** Lara Salosnki Zanoni
+> **Turma :** M32 - 2026
+> **Professor(a):** Radames
 
 ---
 
