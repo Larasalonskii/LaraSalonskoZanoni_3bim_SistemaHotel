@@ -156,20 +156,48 @@ async function salvar() {
 }
 
 async function listar() {
+    const corpo = document.getElementById("tabelaCorpo");
     try {
         const resposta = await fetch(`${URL_API}/quarto/listar`);
         const data = await resposta.json();
-        if (data.sucesso) {
-            let texto = "";
-            for (let linha of data.quartos) {
-                const tipo = linha.tipo_quarto_nome ? ` - Tipo: ${linha.tipo_quarto_nome}` : ' - Tipo: Não informado';
-                texto += `Quarto ${linha.id_quarto} | Capacidade: ${linha.capacidade_quarto}${tipo}<br>`;
-            }
-            document.getElementById("outputSaida").innerHTML = texto || "Nenhum quarto cadastrado.";
+
+        if (!data.sucesso) {
+            mostrarLinhaVazia(corpo, 3, data.mensagem || "Erro ao listar quartos.");
+            return;
         }
+
+        atualizarContador(data.quartos.length);
+        if (data.quartos.length === 0) {
+            mostrarLinhaVazia(corpo, 3, "Nenhum quarto cadastrado.");
+            return;
+        }
+
+        corpo.innerHTML = '';
+        data.quartos.forEach(q => {
+            const tr = document.createElement('tr');
+
+            const tdId = document.createElement('td');
+            tdId.appendChild(criarBotaoId(q.id_quarto, selecionarQuarto));
+
+            const tdCapacidade = document.createElement('td');
+            tdCapacidade.textContent = q.capacidade_quarto ?? '-';
+
+            const tdTipo = document.createElement('td');
+            tdTipo.textContent = q.tipo_quarto_nome || 'Não informado';
+
+            tr.append(tdId, tdCapacidade, tdTipo);
+            corpo.appendChild(tr);
+        });
     } catch (erro) {
-        document.getElementById("outputSaida").innerHTML = "Servidor offline.";
+        mostrarLinhaVazia(corpo, 3, "Servidor offline.");
     }
+}
+
+// Clicou no ID da tabela: volta para o cadastro e carrega o registro
+async function selecionarQuarto(id) {
+    mostrarAba('cadastro');
+    document.getElementById("inputId_quarto").value = id;
+    await procure();
 }
 
 function cancelarOperacao() {
@@ -213,4 +241,52 @@ function visibilidadeDosBotoes(btP, btI, btA, btE, btS) {
     document.getElementById("btExcluir").style.display = btE;
     document.getElementById("btSalvar").style.display = btS;
     document.getElementById("btCancelar").style.display = btS;
+}
+
+
+// ===== Abas (Cadastro / Lista) =====
+function mostrarAba(nome) {
+    const ehCadastro = nome === 'cadastro';
+
+    document.querySelector('.abas').dataset.ativa = nome;
+    document.getElementById('painelCadastro').hidden = !ehCadastro;
+    document.getElementById('painelLista').hidden = ehCadastro;
+
+    const abaCadastro = document.getElementById('abaCadastro');
+    const abaLista = document.getElementById('abaLista');
+
+    abaCadastro.classList.toggle('ativa', ehCadastro);
+    abaLista.classList.toggle('ativa', !ehCadastro);
+    abaCadastro.setAttribute('aria-selected', ehCadastro);
+    abaLista.setAttribute('aria-selected', !ehCadastro);
+}
+
+document.querySelectorAll('.aba').forEach(botao => {
+    botao.addEventListener('click', () => mostrarAba(botao.dataset.aba));
+});
+
+// ===== Auxiliares da tabela =====
+function atualizarContador(quantidade) {
+    document.getElementById('contador').textContent = quantidade;
+}
+
+function mostrarLinhaVazia(corpo, colunas, texto) {
+    corpo.innerHTML = '';
+    const tr = document.createElement('tr');
+    tr.className = 'linha-vazia';
+    const td = document.createElement('td');
+    td.colSpan = colunas;
+    td.textContent = texto;
+    tr.appendChild(td);
+    corpo.appendChild(tr);
+}
+
+function criarBotaoId(id, aoClicar) {
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'btn-id';
+    botao.textContent = id;
+    botao.title = 'Abrir no cadastro';
+    botao.addEventListener('click', () => aoClicar(id));
+    return botao;
 }

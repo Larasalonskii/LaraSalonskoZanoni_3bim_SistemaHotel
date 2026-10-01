@@ -16,7 +16,13 @@
     </header>
 
     <main class="container-master">
-        <div class="conteudo-principal">
+        <div class="abas" data-ativa="cadastro" role="tablist">
+            <button type="button" class="aba ativa" id="abaCadastro" data-aba="cadastro" role="tab" aria-selected="true">Cadastro</button>
+            <button type="button" class="aba" id="abaLista" data-aba="lista" role="tab" aria-selected="false">
+                Quartos cadastrados <span class="aba-contador" id="contador">0</span>
+            </button>
+        </div>
+        <div class="conteudo-principal" id="painelCadastro">
             <section class="form-esquerda">
                 <h2>Dados do Quarto</h2>
 
@@ -56,9 +62,18 @@
             </aside>
         </div>
 
-        <section class="lista-quarto">
+        <section class="lista-quarto" id="painelLista" hidden>
             <h3>Quartos Cadastrados</h3>
-            <div id="outputSaida">Carregando...</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>ID</th><th>Capacidade</th><th>Tipo</th></tr>
+                    </thead>
+                    <tbody id="tabelaCorpo">
+                        <tr class="linha-vazia"><td colspan="3">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 

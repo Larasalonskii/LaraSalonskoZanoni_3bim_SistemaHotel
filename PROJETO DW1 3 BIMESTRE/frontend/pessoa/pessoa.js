@@ -423,6 +423,8 @@ async function carregarPessoas() {
 }
 
 function renderizarTabelaPessoas(pessoas) {
+    const contador = document.getElementById('contadorPessoas');
+    if (contador) contador.textContent = pessoas.length;
     pessoasTableBody.innerHTML = '';
 
     pessoas.forEach(pessoa => {
@@ -444,6 +446,7 @@ function renderizarTabelaPessoas(pessoas) {
 }
 
 async function selecionarPessoa(id) {
+    mostrarAba('cadastro');
     searchId.value = id;
     await buscarPessoa();
 }
@@ -488,3 +491,23 @@ async function enviarJSON(url, metodo, corpo) {
     }
     return resp;
 }
+
+function mostrarAba(nome) {
+    const ehCadastro = nome === 'cadastro';
+
+    document.querySelector('.abas').dataset.ativa = nome;
+    document.getElementById('painelCadastro').hidden = !ehCadastro;
+    document.getElementById('painelLista').hidden = ehCadastro;
+
+    const abaCadastro = document.getElementById('abaCadastro');
+    const abaLista = document.getElementById('abaLista');
+
+    abaCadastro.classList.toggle('ativa', ehCadastro);
+    abaLista.classList.toggle('ativa', !ehCadastro);
+    abaCadastro.setAttribute('aria-selected', ehCadastro);
+    abaLista.setAttribute('aria-selected', !ehCadastro);
+}
+
+document.querySelectorAll('.aba').forEach(botao => {
+    botao.addEventListener('click', () => mostrarAba(botao.dataset.aba));
+});

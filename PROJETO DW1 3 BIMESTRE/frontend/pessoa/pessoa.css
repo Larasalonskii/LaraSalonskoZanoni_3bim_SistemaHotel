@@ -115,6 +115,140 @@ main {
     gap: 1.75rem;
 }
 
+/* --- Abas deslizantes --- */
+.abas {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-self: center;
+    width: min(100%, 520px);
+    padding: 6px;
+    background-color: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--cor-borda);
+    border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* pílula que desliza entre as abas */
+.abas::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    width: calc(50% - 6px);
+    border-radius: 999px;
+    background-image: linear-gradient(135deg, #d6336c 0%, #8f1a47 100%);
+    box-shadow: 0 6px 18px rgba(214, 51, 108, 0.40), inset 0 0 0 1px rgba(201, 162, 107, 0.45);
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.abas[data-ativa="lista"]::before {
+    transform: translateX(100%);
+}
+
+.abas .aba {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    color: var(--cor-texto-suave);
+    background: none;
+    border-radius: 999px;
+    box-shadow: none;
+    filter: none;
+    transform: none;
+    transition: color 0.35s ease;
+}
+
+.abas .aba:hover {
+    color: var(--cor-branco);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+
+.abas .aba.ativa {
+    color: var(--cor-branco);
+}
+
+.aba-contador {
+    min-width: 1.5rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: center;
+    color: #2a0a17;
+    background-color: var(--ouro);
+    border-radius: 999px;
+}
+
+/* painéis entram deslizando pelo lado */
+.form-section[hidden],
+.list-section[hidden] {
+    display: none;
+}
+
+@keyframes entrarPelaDireita {
+    from {
+        opacity: 0;
+        transform: translateX(48px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes entrarPelaEsquerda {
+    from {
+        opacity: 0;
+        transform: translateX(-48px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.abas[data-ativa="lista"]~#painelLista:not([hidden]) {
+    animation: entrarPelaDireita 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.abas[data-ativa="cadastro"]~#painelCadastro:not([hidden]) {
+    animation: entrarPelaEsquerda 0.45s cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+/* botão com o CPF dentro da tabela: vira link discreto */
+.btn-id {
+    padding: 0;
+    font-size: inherit;
+    font-weight: 600;
+    letter-spacing: normal;
+    text-transform: none;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--cor-primaria-escura);
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.btn-id:hover {
+    color: var(--cor-branco);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+
 /* --- Cartões (formulário e listagem) --- */
 .form-section,
 .list-section {
@@ -226,7 +360,7 @@ input[type="checkbox"] {
     margin-bottom: 1.75rem;
 }
 
-.search-container > label {
+.search-container>label {
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -459,7 +593,7 @@ tbody td:first-child {
     max-width: min(380px, calc(100vw - 2.5rem));
 }
 
-.message-container > * {
+.message-container>* {
     padding: 0.9rem 1.25rem;
     font-size: 0.9rem;
     font-weight: 500;
@@ -512,6 +646,7 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;
+        animation: none !important;
     }
 }
 

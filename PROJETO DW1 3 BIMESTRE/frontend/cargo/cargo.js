@@ -106,23 +106,46 @@ async function salvar() {
 }
 
 async function listar() {
+    const corpo = document.getElementById("tabelaCorpo");
     try {
         const resposta = await fetch(`${URL_API}/cargo/listar`);
         const data = await resposta.json();
-        
-        if (data.sucesso) {
-            let texto = "";
-            for (let linha of data.cargos) {
-                texto += `<b>[${linha.id_cargo}]</b> - ${linha.nome_cargo}<br>`;
-            }
-            document.getElementById("outputSaida").innerHTML = texto || "Nenhum cargo cadastrado.";
-        } else {
-            document.getElementById("outputSaida").innerHTML = `Erro no banco: ${data.mensagem}`;
+
+        if (!data.sucesso) {
+            mostrarLinhaVazia(corpo, 2, `Erro no banco: ${data.mensagem}`);
+            return;
         }
+
+        atualizarContador(data.cargos.length);
+        if (data.cargos.length === 0) {
+            mostrarLinhaVazia(corpo, 2, "Nenhum cargo cadastrado.");
+            return;
+        }
+
+        corpo.innerHTML = '';
+        data.cargos.forEach(c => {
+            const tr = document.createElement('tr');
+
+            const tdId = document.createElement('td');
+            tdId.appendChild(criarBotaoId(c.id_cargo, selecionarCargo));
+
+            const tdNome = document.createElement('td');
+            tdNome.textContent = c.nome_cargo ?? '';
+
+            tr.append(tdId, tdNome);
+            corpo.appendChild(tr);
+        });
     } catch (erro) {
         console.error("Erro ao listar:", erro);
-        document.getElementById("outputSaida").innerHTML = "Servidor offline ou erro de conexão (CORS).";
+        mostrarLinhaVazia(corpo, 2, "Servidor offline ou erro de conexão (CORS).");
     }
+}
+
+// Clicou no ID da tabela: volta para o cadastro e carrega o registro
+async function selecionarCargo(id) {
+    mostrarAba('cadastro');
+    document.getElementById("inputId_cargo").value = id;
+    await procure();
 }
 
 function cancelarOperacao() {
@@ -161,4 +184,52 @@ function visibilidadeDosBotoes(btP, btI, btA, btE, btS) {
     document.getElementById("btExcluir").style.display = btE;
     document.getElementById("btSalvar").style.display = btS;
     document.getElementById("btCancelar").style.display = btS;
+}
+
+
+// ===== Abas (Cadastro / Lista) =====
+function mostrarAba(nome) {
+    const ehCadastro = nome === 'cadastro';
+
+    document.querySelector('.abas').dataset.ativa = nome;
+    document.getElementById('painelCadastro').hidden = !ehCadastro;
+    document.getElementById('painelLista').hidden = ehCadastro;
+
+    const abaCadastro = document.getElementById('abaCadastro');
+    const abaLista = document.getElementById('abaLista');
+
+    abaCadastro.classList.toggle('ativa', ehCadastro);
+    abaLista.classList.toggle('ativa', !ehCadastro);
+    abaCadastro.setAttribute('aria-selected', ehCadastro);
+    abaLista.setAttribute('aria-selected', !ehCadastro);
+}
+
+document.querySelectorAll('.aba').forEach(botao => {
+    botao.addEventListener('click', () => mostrarAba(botao.dataset.aba));
+});
+
+// ===== Auxiliares da tabela =====
+function atualizarContador(quantidade) {
+    document.getElementById('contador').textContent = quantidade;
+}
+
+function mostrarLinhaVazia(corpo, colunas, texto) {
+    corpo.innerHTML = '';
+    const tr = document.createElement('tr');
+    tr.className = 'linha-vazia';
+    const td = document.createElement('td');
+    td.colSpan = colunas;
+    td.textContent = texto;
+    tr.appendChild(td);
+    corpo.appendChild(tr);
+}
+
+function criarBotaoId(id, aoClicar) {
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'btn-id';
+    botao.textContent = id;
+    botao.title = 'Abrir no cadastro';
+    botao.addEventListener('click', () => aoClicar(id));
+    return botao;
 }

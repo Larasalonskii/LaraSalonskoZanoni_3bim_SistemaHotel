@@ -15,7 +15,13 @@
     </header>
 
     <main>
-        <section class="form-section">
+        <div class="abas" data-ativa="cadastro" role="tablist">
+    <button type="button" class="aba ativa" id="abaCadastro" data-aba="cadastro" role="tab" aria-selected="true">Cadastro</button>
+    <button type="button" class="aba" id="abaLista" data-aba="lista" role="tab" aria-selected="false">
+        Pessoas cadastradas <span class="aba-contador" id="contadorPessoas">0</span>
+    </button>
+</div>
+        <section class="form-section" id="painelCadastro">
             <h2>Cadastro de Pessoa</h2>
 
             <form id="pessoaForm">
@@ -90,15 +96,7 @@
             </div>
         </section>
 
-        <!--  //cpf_pessoa, 
-                      nome_pessoa, 
-                      data_nascimento_pessoa,
-                      endereco_pessoa,
-                      senha_pessoa, 
-                      email_pessoa 
-                      -->
-
-        <section class="list-section">
+        <section class="list-section" id="painelLista" hidden>
             <div class="table-container">
                 <table id="pessoasTable">
                     <thead>
